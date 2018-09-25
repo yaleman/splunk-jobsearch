@@ -1,0 +1,3 @@
+#!/bin/bash
+
+splunk-appinspect inspect jobsearch/  --max-messages=all --mode=precert

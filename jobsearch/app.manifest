@@ -4,7 +4,7 @@
     "title": "Splunk Jobs", 
     "id": {
       "group": null, 
-      "name": "splunkjobs", 
+      "name": "jobsearch", 
       "version": "0.0.3"
     }, 
     "author": [

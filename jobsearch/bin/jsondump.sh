@@ -8,4 +8,4 @@ export CLASSPATH
 
 #PYTHONVEROSE=1
 #export PYTHONVERBOSE
-/usr/bin/python3 $SPLUNK_HOME/etc/apps/splunkjobs/bin/jsondump.py
+/usr/bin/python3 $SPLUNK_HOME/etc/apps/jobsearch/bin/jsondump.py

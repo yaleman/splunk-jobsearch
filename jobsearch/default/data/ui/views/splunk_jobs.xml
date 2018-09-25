@@ -16,7 +16,7 @@
       <fieldForLabel>region</fieldForLabel>
       <fieldForValue>region</fieldForValue>
       <search>
-        <query>index=main source="splunkjobs" 
+        <query>index=main source="jobsearch" 
 |  spath region
 |  dedup region
 | sort region</query>
@@ -29,7 +29,7 @@
     <panel>
       <table>
         <search>
-          <query>source="splunkjobs" 
+          <query>source="jobsearch" 
 |  spath region 
 |  sort region, city
 | search $region$
