@@ -1,0 +1,55 @@
+<form>
+  <label>Splunk Jobs</label>
+  <fieldset submitButton="true" autoRun="true">
+    <input type="time" token="timeframe" searchWhenChanged="true">
+      <label>Timeframe</label>
+      <default>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </default>
+    </input>
+    <input type="multiselect" token="region" searchWhenChanged="false">
+      <label>Region</label>
+      <valuePrefix>region="</valuePrefix>
+      <valueSuffix>"</valueSuffix>
+      <delimiter> OR </delimiter>
+      <fieldForLabel>region</fieldForLabel>
+      <fieldForValue>region</fieldForValue>
+      <search>
+        <query>index=main source="splunkjobs" 
+|  spath region
+|  dedup region
+| sort region</query>
+        <earliest>-24h@h</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+  </fieldset>
+  <row>
+    <panel>
+      <table>
+        <search>
+          <query>source="splunkjobs" 
+|  spath region 
+|  sort region, city
+| search $region$
+| dedup title_link
+| eval title_link="https://splunk.jobs/jobs"+title_link
+| table city, region, title, title_link
+| rename city as City, region as Region title as Title title_link as Link</query>
+          <earliest>$timeframe.earliest$</earliest>
+          <latest>$timeframe.latest$</latest>
+          <sampleRatio>1</sampleRatio>
+        </search>
+        <option name="count">20</option>
+        <option name="dataOverlayMode">none</option>
+        <option name="drilldown">none</option>
+        <option name="percentagesRow">false</option>
+        <option name="refresh.display">progressbar</option>
+        <option name="rowNumbers">false</option>
+        <option name="totalsRow">false</option>
+        <option name="wrap">true</option>
+      </table>
+    </panel>
+  </row>
+</form>
