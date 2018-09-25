@@ -1,12 +1,12 @@
 Name: Splunk Jobs
 Author: James Hodgkinson
-Site: https://bitbucket.org/yaleman/jobsearch
-Support: https://bitbucket.org/yaleman/jobsearch/issues or email mailto:james@terminaloutcomes.com
+Code repository: [yaleman/splunk-jobsearch](https://bitbucket.org/yaleman/splunk-jobsearch)
+Support: [Repository issues on BitBucket](https://bitbucket.org/yaleman/splunk-jobsearch/issues) or [email](mailto:james@terminaloutcomes.com)
 
-Requirements:
+Python library requirements:
 
-- python3 (https://python.org)
-- BeautifulSoup (https://www.crummy.com/software/BeautifulSoup/)
-- requests (http://docs.python-requests.org/en/master/)
+* [python3](https://python.org)
+* [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/)
+* [requests](http://docs.python-requests.org/en/master/)
 
 On Ubuntu `sudo apt install python3-requests python3-bs4` should do it.
