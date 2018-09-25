@@ -1,7 +1,7 @@
 {
   "schemaVersion": "2.0.0", 
   "info": {
-    "title": "Splunk Jobs", 
+    "title": "Job Search", 
     "id": {
       "group": null, 
       "name": "jobsearch", 
