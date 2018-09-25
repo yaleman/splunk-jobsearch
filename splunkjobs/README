@@ -1,9 +1,12 @@
 Name: Splunk Jobs
 Author: James Hodgkinson
+Site: https://bitbucket.org/yaleman/splunkjobs
+Support: https://bitbucket.org/yaleman/splunkjobs/issues or email mailto:james@terminaloutcomes.com
+
 Requirements:
 
-- python3
-- BeautifulSoup
-- requests
+- python3 (https://python.org)
+- BeautifulSoup (https://www.crummy.com/software/BeautifulSoup/)
+- requests (http://docs.python-requests.org/en/master/)
 
 On Ubuntu `sudo apt install python3-requests python3-bs4` should do it.
