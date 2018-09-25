@@ -1,0 +1,28 @@
+---
+# this is going to be an ansible playbook for installing the dev requirements
+
+#- name: install splunk
+#  deb:
+#    src:
+
+- name: install package requirements
+  apt:
+    name: "{{item}}"
+    state: present
+  with_items:
+    - python-pip
+    - python3-bs4
+    - python3-requests
+    - libxml2-dev
+    - libxslt-dev
+    - lib32z1-dev
+    - python-lxml
+
+#- name: install appinspect
+#  pip:
+#    name: appinspect
+#    state: present
+
+# unarchive this http://dev.splunk.com/goto/appinspectdownload
+
+#http://download.splunk.com/misc/packaging-toolkit/splunk-packaging-toolkit-1.0.0.tar.gz
