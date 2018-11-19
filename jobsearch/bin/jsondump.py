@@ -17,7 +17,7 @@ def stripit(string, pairs):
 
 page = requests.get(url)
 soup = BeautifulSoup(page.text, 'lxml')
-jobli = soup.select('li[class="direct_joblisting with_description"]')
+jobli = soup.select('li[class="direct_joblisting"]')
 
 jobs = {}
 for job in jobli:
