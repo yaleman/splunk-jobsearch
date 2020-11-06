@@ -5,12 +5,12 @@
     "id": {
       "group": null, 
       "name": "jobsearch", 
-      "version": "0.0.4"
+      "version": "0.0.5"
     }, 
     "author": [
       {
         "name": "James Hodgkinson", 
-        "email": null, 
+        "email": "james@terminaloutcomes.com", 
         "company": null
       }
     ], 
@@ -47,7 +47,7 @@
     "_standalone", 
     "_distributed"
   ], 
-  "targetWorkloads": null
+  "targetWorkloads": "*"
 }
 # The following sections can be customized and added to the manifest. For detailed information,
 # see the documentation at http://dev.splunk.com/view/packaging-toolkit/SP-CAAAE9V
@@ -80,15 +80,10 @@
 # }
 #
 # Specify the platform version requirements for this app
-# "platformRequirements": {
-#     "splunk": {
-#         "Enterprise": "<version>"
-#     }
-# }
-#
-# Lists the supported deployment types this app can be installed on
-# "supportedDeployments": ["*" | "_standalone" | "_distributed" | "_search_head_clustering"]
-#
-# Lists the targets where app can be installed to
-# "targetWorkloads": ["*" | "_search_heads" | "_indexers" | "_forwarders"]
+#"platformRequirements": {
+#    "splunk": {
+#        "Enterprise": "8",
+#        "Free" : "8"
+#    }
+#}
 #

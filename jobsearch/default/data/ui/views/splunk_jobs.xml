@@ -8,7 +8,7 @@
         <latest>now</latest>
       </default>
     </input>
-    <input type="multiselect" token="region" searchWhenChanged="false">
+    <input type="multiselect" token="region" searchWhenChanged="true">
       <label>Region</label>
       <valuePrefix>region="</valuePrefix>
       <valueSuffix>"</valueSuffix>
@@ -16,13 +16,16 @@
       <fieldForLabel>region</fieldForLabel>
       <fieldForValue>region</fieldForValue>
       <search>
-        <query>index=main source="jobsearch" 
+        <query>source="jobsearch" 
 |  spath region
 |  dedup region
 | sort region</query>
         <earliest>-24h@h</earliest>
         <latest>now</latest>
       </search>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <initialValue>*</initialValue>
     </input>
   </fieldset>
   <row>
@@ -30,13 +33,14 @@
       <table>
         <search>
           <query>source="jobsearch" 
-|  spath region 
-|  sort region, city
-| search $region$
-| dedup title_link
-| eval title_link="https://splunk.jobs/jobs"+title_link
-| table city, region, title, title_link
-| rename city as City, region as Region title as Title title_link as Link</query>
+| spath region output=region 
+| search $region$ 
+| spath jobTitle output=Title 
+| spath locations output=locations 
+| rename "locations{}" as Locations 
+| dedup region, Title, Locations 
+| table region, Locations, Title 
+| sort region, Locations, Title</query>
           <earliest>$timeframe.earliest$</earliest>
           <latest>$timeframe.latest$</latest>
           <sampleRatio>1</sampleRatio>
