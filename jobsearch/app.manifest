@@ -47,43 +47,5 @@
     "_standalone", 
     "_distributed"
   ], 
-  "targetWorkloads": "*"
+  "targetWorkloads": ["*"]
 }
-# The following sections can be customized and added to the manifest. For detailed information,
-# see the documentation at http://dev.splunk.com/view/packaging-toolkit/SP-CAAAE9V
-#
-# Lists the app dependencies and version requirements
-# "dependencies": {
-#     "<app-group>:<app-name>": {
-#         "version": "*",
-#         "package": "<source-package-location>",
-#         "optional": [true|false]
-#     }
-# }
-#
-# Lists the inputs that belong on the search head rather than forwarders
-# "tasks": []
-#
-# Lists the possible input groups with app dependencies, and inputs that should be included
-# "inputGroups": {
-#     "<group-name>": {
-#         "requires": {
-#             "<app-group>:<app-name>": ["<dependent-input-groups>"]
-#         },
-#         "inputs": ["<defined-inputs>"]
-#     }
-# }
-#
-# Lists the app IDs that cannot be installed on the system alongside this app
-# "incompatibleApps": {
-#     "<app-group>:<app-name>": "<version>"
-# }
-#
-# Specify the platform version requirements for this app
-#"platformRequirements": {
-#    "splunk": {
-#        "Enterprise": "8",
-#        "Free" : "8"
-#    }
-#}
-#
