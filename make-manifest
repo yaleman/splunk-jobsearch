@@ -1,1 +1,0 @@
-slim generate-manifest jobsearch > jobsearch/app.manifest

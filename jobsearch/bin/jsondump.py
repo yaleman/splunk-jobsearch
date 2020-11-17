@@ -5,9 +5,16 @@
     (hopefully they're advertising for less than 2000and returns a json blob for each job
 """
 
+
 import json
 import re
+import sys
+import time
+from datetime import datetime
+
 import requests
+
+from jsonfixer import jsonfixer # pylint: disable=unresolved-import
 
 GET_JOBDATA = True
 
@@ -37,19 +44,20 @@ def get_jobdescription(job):
     joburl = f"{BASEURL}{job.get('url')}"
 
     jobpage = requests.get(joburl)
+    if jobpage.status_code == 404:
+        return job
     jobpage.raise_for_status()
 
     jobdata_search = jobpagefinder.findall(jobpage.text)
     if jobdata_search:
-        try:
-            jobdata = json.loads(jobdata_search[0])
-        except json.JSONDecodeError as error:
-            # TODO: log this to stderr
-            print(f"Error parsing job data JSON ({error}) for {joburl}: {jobdata_search[0]}")
-
-        for field in JOBDATA_FIELDS:
-            if field in jobdata:
-                job[field] = jobdata.get(field)
+        jobdata = jsonfixer(jobdata_search[0], debug=False)
+        if jobdata:
+            for field in JOBDATA_FIELDS:
+                if field in jobdata:
+                    job[field] = jobdata.get(field)
+        else:
+            print("JSON data fix failed, running again with debug on to capture errors", file=sys.stderr)
+            jsonfixer(jobdata_search[0], debug=True)
     return job
 
 def main():
@@ -62,16 +70,19 @@ def main():
     if not data.get('careers'):
         raise ValueError(f"Key careers not found in data: \n {data}")
 
+    jobnum = 0
     for job in data.get('careers'):
         job.pop('allLocations')
 
         try:
             if GET_JOBDATA:
                 job = get_jobdescription(job)
-        #pylint: disable=broad-except
         except Exception as error:
-            # TODO: log this to stderr
-            print("Error grabbing and parsing job data: %s", error)
+            print(f"Error grabbing and parsing job data: {error}", file=sys.stderr)
+        # add the time field
+        job['_time'] = datetime.now().utcnow().isoformat()
+        print(jobnum, file=sys.stderr)
+        jobnum = jobnum + 1
         print(json.dumps(job))
 
 if __name__ == '__main__':

@@ -1,1 +1,5 @@
-slim package jobsearch
+#!/usr/bin/bash
+
+find jobsearch -type f -name '*.conf' | xargs ksconf check -
+
+tar czvf jobsearch.tar.gz --exclude '**__pycache__**' jobsearch/

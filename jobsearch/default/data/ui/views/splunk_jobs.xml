@@ -17,9 +17,8 @@
       <fieldForValue>region</fieldForValue>
       <search>
         <query>source="jobsearch" 
-|  spath region
 |  dedup region
-| sort region</query>
+| sort region | table region</query>
         <earliest>-24h@h</earliest>
         <latest>now</latest>
       </search>
@@ -27,32 +26,73 @@
       <default>*</default>
       <initialValue>*</initialValue>
     </input>
+    <input type="dropdown" token="category" searchWhenChanged="true">
+      <label>Category</label>
+      <choice value="*">All</choice>
+      <default>*</default>
+      <prefix>category="</prefix>
+      <suffix>"</suffix>
+      <initialValue>*</initialValue>
+      <fieldForLabel>category</fieldForLabel>
+      <fieldForValue>category</fieldForValue>
+      <search>
+        <query>source=jobsearch | dedup category | table category | sort category</query>
+        <earliest>-30d@d</earliest>
+        <latest>now</latest>
+      </search>
+    </input>
+    <input type="text" token="jobTitle">
+      <label>Job Title Search</label>
+      <prefix>jobTitle="*</prefix>
+      <suffix>*"</suffix>
+      <default></default>
+      <initialValue>*</initialValue>
+    </input>
   </fieldset>
+  <row>
+    <panel depends="$clicked$">
+      <table>
+        <title>Job Details</title>
+        <search>
+          <query>source=jobsearch $jobTitle$ $region$ $category$ 
+| rex mode=sed "s/(Education)\s*:\s*/\n\n\1: /" field=description
+| rex mode=sed "s/(Responsibilities)\s*:\s*/\n\n\1: /" field=description
+| rex mode=sed "s/(Knowledge)\s*:\s*/\n\n\1: /" field=description
+| rex mode=sed "s/(Requirements)\s*:\s*/\n\n\1: /" field=description
+| table description
+| rename jobTitle as Title, description as Description</query>
+          <earliest>$timeframe.earliest$</earliest>
+          <latest>$timeframe.latest$</latest>
+        </search>
+        <option name="drilldown">none</option>
+        <option name="refresh.display">progressbar</option>
+      </table>
+    </panel>
+  </row>
   <row>
     <panel>
       <table>
         <search>
-          <query>source="jobsearch" 
-| spath region output=region 
-| search $region$ 
-| spath jobTitle output=Title 
-| spath locations output=locations 
-| rename "locations{}" as Locations 
-| dedup region, Title, Locations 
-| table region, Locations, Title 
-| sort region, Locations, Title</query>
+          <query>source="jobsearch" $region$ $category$ $jobTitle$
+| rename locations{} as Locations 
+| eval datePosted=strftime(strptime(datePosted,"%Y-%m-%dT%H:%M:%S.%N-%:z"),"%Y-%m-%d") 
+| sort -datePosted, category, region, locations, jobTitle | dedup jobTitle, region, datePosted
+| table category, region, jobTitle, Locations, datePosted 
+| rename datePosted as "Date Posted", jobTitle as Title, category as Category, region as Region</query>
           <earliest>$timeframe.earliest$</earliest>
           <latest>$timeframe.latest$</latest>
           <sampleRatio>1</sampleRatio>
         </search>
         <option name="count">20</option>
         <option name="dataOverlayMode">none</option>
-        <option name="drilldown">none</option>
+        <option name="drilldown">row</option>
         <option name="percentagesRow">false</option>
-        <option name="refresh.display">progressbar</option>
         <option name="rowNumbers">false</option>
         <option name="totalsRow">false</option>
         <option name="wrap">true</option>
+        <drilldown>
+          <link target="_blank">/app/jobsearch/splunk_jobs?form.jobTitle=$row.Title$&amp;form.region=$row.Region$&amp;form.category=$row.Category$&amp;clicked=job</link>
+        </drilldown>
       </table>
     </panel>
   </row>
