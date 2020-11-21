@@ -1,0 +1,262 @@
+reports:
+- app_name: Job Search
+  app_version: 0.0.6
+  app_hash: 33168fecf7878aa36b6d3c2090e83bc9
+  app_author: James Hodgkinson
+  app_description: Monitoring the splunk jobs page for new jobs!
+  metrics:
+    start_time: 2020-11-21 12:55:11.615807
+    end_time: 2020-11-21 12:55:13.032458
+    execution_time: 1.416651
+  groups:
+  - name: check_cloud_simple_app
+    description: 'Cloud operations simple application check
+
+      This group serves to help validate simple applications in an effort to try and automate the validation process for cloud
+      operations.'
+    checks:
+    - name: check_for_auto_update_features
+      messages:
+      - filename: check_cloud_simple_app.py
+        line: 2052
+        code: reporter.manual_check(reporter_output, directory)
+        message_filename: bin/
+        message_line: null
+        message: 'Please check the bin/ directory for app auto-update features, which is prohibited. File: bin/'
+        result: manual_check
+        response: ' '
+    - name: check_for_known_vulnerabilities_in_third_party_libraries
+      messages:
+      - filename: check_cloud_simple_app.py
+        line: 2081
+        code: reporter.manual_check(reporter_output)
+        message_filename: null
+        message_line: null
+        message: 'Please check for known vulnerabilities in third-party libraries. Use these links: https://web.nvd.nist.gov/view/vuln/search.
+          and https://nvd.nist.gov/cvss.cfm'
+        result: manual_check
+        response: 'only Splunk-supplied or system libraries are used'
+    - name: check_for_reverse_shells
+      messages:
+      - filename: check_cloud_simple_app.py
+        line: 2029
+        code: reporter.manual_check(reporter_output)
+        message_filename: null
+        message_line: null
+        message: Please check for reverse shells.
+        result: manual_check
+        response: ' '
+  - name: check_external_data_sources
+    description: Calls to external data sources
+    checks:
+    - name: check_external_data_sources
+      messages:
+      - filename: check_external_data_sources.py
+        line: 23
+        code: reporter.manual_check("Documentation will be read during code review.")
+        message_filename: null
+        message_line: null
+        message: Documentation will be read during code review.
+        result: manual_check
+        response: ' '
+  - name: check_intellectual_property
+    description: Intellectual property standards
+    checks:
+    - name: check_splunk_logo
+      messages:
+      - filename: check_intellectual_property.py
+        line: 27
+        code: reporter.manual_check("Branding will be inspected during code review.")
+        message_filename: null
+        message_line: null
+        message: Branding will be inspected during code review.
+        result: manual_check
+        response: ' '
+  - name: check_python_files
+    description: Python file standards
+    checks:
+    - name: check_for_file_and_directory_access
+      messages:
+      - filename: reporter.py
+        line: 292
+        code: report_function(
+        message_filename: bin/utilities/filewriter.py
+        message_line: 15
+        message: 'The following line will be inspected during code review. The `tempfile.NamedTemporaryFile` module/method
+          can be used to access file/directory outside of the app dir. Function call arguments: [], keywords: {"prefix": "?",
+          "suffix": ".txt", "delete": "?"} File: bin/utilities/filewriter.py Line Number: 15'
+        result: manual_check
+        response: 'writes to environment temporary dir'
+      - filename: reporter.py
+        line: 292
+        code: report_function(
+        message_filename: bin/utilities/jsonfixer.py
+        message_line: 27
+        message: 'The following line will be inspected during code review. The `tempfile.NamedTemporaryFile` module/method
+          can be used to access file/directory outside of the app dir. Function call arguments: [], keywords: {"prefix": "splunk-jobsearch-debug-",
+          "suffix": ".txt", "delete": "?"} File: bin/utilities/jsonfixer.py Line Number: 27'
+        result: manual_check
+        response: 'writes to environment temporary dir'
+  - name: check_malware
+    description: Malware, viruses, malicious content, user security standards (static checks)
+    checks:
+    - name: check_authorization_credentials
+      messages:
+      - filename: check_malware.py
+        line: 65
+        code: reporter.manual_check("Code will be manually inspected during code review.")
+        message_filename: null
+        message_line: null
+        message: Code will be manually inspected during code review.
+        result: manual_check
+        response: ' '
+    - name: check_embedded_links
+      messages:
+      - filename: check_malware.py
+        line: 56
+        code: reporter.manual_check("Links will be manually inspected during code review.")
+        message_filename: null
+        message_line: null
+        message: Links will be manually inspected during code review.
+        result: manual_check
+        response: 'I sure hope malware is not on splunk.com'
+  - name: check_potentially_harmful_operations
+    description: Operating system standards
+    checks:
+    - name: check_fs_writes
+      messages:
+      - filename: check_potentially_harmful_operations.py
+        line: 154
+        code: reporter.manual_check("File access will be inspected during code review.")
+        message_filename: null
+        message_line: null
+        message: File access will be inspected during code review.
+        result: manual_check
+        response: 'uses NamedTemporaryFile'
+    - name: check_hard_coded_paths
+      messages:
+      - filename: check_potentially_harmful_operations.py
+        line: 78
+        code: reporter.manual_check(reporter_output, file_name, line_number)
+        message_filename: bin/jsondump.py
+        message_line: '22'
+        message: 'Found possible hard-coded path ''/bin/careers/jobs''''. File: bin/jsondump.py Line Number: 22'
+        result: manual_check
+        response: 'invalid check'
+  - name: check_security
+    description: Security vulnerabilities
+    checks:
+    - name: check_for_insecure_http_calls_in_python
+      messages:
+      - filename: reporter.py
+        line: 292
+        code: report_function(
+        message_filename: bin/jsondump.py
+        message_line: 46
+        message: 'Possible insecure HTTP Connection. Match: requests.get Positional arguments, ["?"]; Keyword arguments, {}
+          File: bin/jsondump.py Line Number: 46'
+        result: manual_check
+        response: 'https is forced by baseurl in line 21'
+      - filename: reporter.py
+        line: 292
+        code: report_function(
+        message_filename: bin/jsondump.py
+        message_line: 70
+        message: 'Possible insecure HTTP Connection. Match: requests.get Positional arguments, ["?"]; Keyword arguments, {}
+          File: bin/jsondump.py Line Number: 70'
+        result: manual_check
+        response: 'https is forced by baseurl in line 21'
+  - name: check_source_and_binaries
+    description: Source code and binaries standards
+    checks:
+    - name: check_for_urls_in_files
+      messages:
+      - filename: check_source_and_binaries.py
+        line: 211
+        code: reporter.manual_check(reporter_output, filename, line_number)
+        message_filename: bin/jsondump.py
+        message_line: '21'
+        message: 'A file was detected that contains that a url. Match: https://www.splunk.com File: bin/jsondump.py Line Number:
+          21'
+        result: manual_check
+        response: 'data source'
+      - filename: check_source_and_binaries.py
+        line: 224
+        code: reporter.manual_check(str(reporter_output))
+        message_filename: null
+        message_line: null
+        message: 'A url https://www.splunk.com was detected in the following files, ( [21]) File: bin/jsondump.py'
+        result: manual_check
+        response: ' '
+  - name: check_documentation_standards
+    description: Documentation standards
+    checks:
+    - name: check_dependencies
+      messages:
+      - filename: check_documentation_standards.py
+        line: 151
+        code: reporter.manual_check("Documentation will be read during code review.")
+        message_filename: null
+        message_line: null
+        message: Documentation will be read during code review.
+        result: manual_check
+        response: ' '
+    - name: check_documented_included_open_source
+      messages:
+      - filename: check_documentation_standards.py
+        line: 109
+        code: reporter.manual_check("Documentation will be read during code review.")
+        message_filename: null
+        message_line: null
+        message: Documentation will be read during code review.
+        result: manual_check
+        response: ' '
+    - name: check_editing_and_proofreading
+      messages:
+      - filename: check_documentation_standards.py
+        line: 98
+        code: reporter.manual_check("Documentation will be read during code review.")
+        message_filename: null
+        message_line: null
+        message: Documentation will be read during code review.
+        result: manual_check
+        response: ' '
+  - name: check_documentation_for_sensitive_functionality
+    description: Appropriate use of sensitive functionality
+    checks:
+    - name: check_requires_access_to_files_outside_apps_dir
+      messages:
+      - filename: check_documentation_for_sensitive_functionality.py
+        line: 109
+        code: reporter.manual_check("File access will be inspected during code review.")
+        message_filename: null
+        message_line: null
+        message: File access will be inspected during code review.
+        result: manual_check
+        response: ' '
+  - name: check_support_and_installation_standards
+    description: Platform targets and claimed supported Splunk Enterprise versions
+    checks:
+    - name: check_install_on_claimed_targets
+      messages:
+      - filename: check_support_and_installation_standards.py
+        line: 29
+        code: reporter.manual_check("App will be checked during code review.")
+        message_filename: null
+        message_line: null
+        message: App will be checked during code review.
+        result: manual_check
+        response: ' '
+  - name: check_support_requirements
+    description: Support requirements
+    checks:
+    - name: check_link_includes_contact_info
+      messages:
+      - filename: check_support_requirements.py
+        line: 31
+        code: reporter.manual_check("Documentation will be read during code review.")
+        message_filename: null
+        message_line: null
+        message: Documentation will be read during code review.
+        result: manual_check
+        response: ' '

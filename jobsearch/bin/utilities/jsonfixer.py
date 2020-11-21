@@ -4,9 +4,10 @@
 
 import json
 import sys
+from tempfile import NamedTemporaryFile
 import time
 
-def jsonfixer(text: str, depth: int=0, debug: bool=False, debug_write_files: bool=False):
+def jsonfixer(text: str, depth: int=0, debug: bool=False, write_files: bool=False):
     """ tries to fix broken JSON
         uses json.loads and grabs the exception, looking for broken things.
         
@@ -20,8 +21,10 @@ def jsonfixer(text: str, depth: int=0, debug: bool=False, debug_write_files: boo
         data = json.loads(text)
         return data
     except json.JSONDecodeError as exception_data:
-        if debug_write_files:
-            with open(f"/tmp/jsonfixer-errordata-{int(time.time())}.json", 'w') as fh:
+        if write_files:
+            # only used during dev or testing
+            print("Writing debug file")
+            with NamedTemporaryFile(prefix='splunk-jobsearch-debug-', suffix='.txt', delete=False) as fh:
                 fh.write(text)
         if debug:
             print(exception_data, file=sys.stderr)

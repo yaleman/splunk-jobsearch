@@ -1,5 +1,6 @@
 #!/usr/bin/bash
 
+# shellcheck disable=SC2038
 find jobsearch -type f -name '*.conf' | xargs ksconf check -
 
 tar czvf jobsearch.tar.gz --exclude '**__pycache__**' jobsearch/

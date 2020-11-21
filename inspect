@@ -2,4 +2,14 @@
 
 find ./jobsearch/ -type d -name '__pycache__' -exec rm -rf "{}" \;
 
-splunk-appinspect inspect jobsearch/  --max-messages=all
+splunk-appinspect inspect jobsearch/  --max-messages=all --mode=precert --generate-feedback
+
+if [ -f "jobsearch/inspect.yml" ]; then
+    echo "inspect.yml in package dir, opening with editor before moving into package dir"
+    edit inspect.yml
+    mv inspect.yml jobsearch/inspect.yml
+    echo "done"
+else
+    echo "inspect.yml has been generated for feedback, edit it and copy to jobsearch/inspect.yml to include in package" 
+
+fi

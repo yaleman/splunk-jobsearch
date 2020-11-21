@@ -11,7 +11,6 @@ import re
 import sys
 import time
 from datetime import datetime
-from hashlib import md5
 
 import requests
 
@@ -49,11 +48,7 @@ def get_jobdescription(job, write_files: bool=False):
         return job
     jobpage.raise_for_status()
     if write_files:
-        # make hash of url for file storage
-        urlhash = md5(joburl.encode('utf-8'))
-        if not write_file(filename=f"jobdescription-{urlhash.hexdigest()}", content=jobpage.text):
-            sys.exit()
-
+        write_file(content=jobpage.text)
     jobdata_search = jobpagefinder.findall(jobpage.text)
     if jobdata_search:
         jobdata = jsonfixer(jobdata_search[0], debug=False)
@@ -63,7 +58,7 @@ def get_jobdescription(job, write_files: bool=False):
                     job[field] = jobdata.get(field)
         else:
             print("JSON data fix failed, running again with debug on to capture errors", file=sys.stderr)
-            jsonfixer(jobdata_search[0], debug=True)
+            jsonfixer(jobdata_search[0], debug=True, write_files=write_files)
     return job
 
 def main(write_files: bool=False):
@@ -76,10 +71,7 @@ def main(write_files: bool=False):
     
         page.raise_for_status()
         if write_files:
-            # make hash of url for file storage
-            urlhash = md5(JOBSURL.encode('utf-8'))
-            if not write_file(filename=f"jobspage-{urlhash.hexdigest()}.txt", content=page.text):
-                sys.exit()
+            write_file(content=page.text)
 
     except Exception as error_message:
         print(f"Failed to query job data from {JOBSURL}: {error_message}", file=sys.stderr)
@@ -103,19 +95,20 @@ def main(write_files: bool=False):
     for job in data.get('careers'):
         job.pop('allLocations')
 
-        try:
-            if GET_JOBDATA:
-                job = get_jobdescription(job, write_files=write_files)
-                # add the time field
-                job['_time'] = datetime.now().utcnow().isoformat()
-                print(f"Parsing job #{jobnum}", file=sys.stderr)
-                jobnum = jobnum + 1
-                print(json.dumps(job))
-        except Exception as error:
-            print(f"Error ({error}) grabbing and parsing job data for job: {json.dumps(job)}", file=sys.stderr)
+        #try:
+        if GET_JOBDATA:
+            job = get_jobdescription(job, write_files=write_files)
+            # add the time field
+            job['_time'] = datetime.now().utcnow().isoformat()
+            print(f"Parsing job #{jobnum}", file=sys.stderr)
+            jobnum = jobnum + 1
+            print(json.dumps(job))
+       # except Exception as error:
+        #print(f"Error ({error}) grabbing and parsing job data for job: {json.dumps(job)}", file=sys.stderr)
 
 if __name__ == '__main__':
     if '--write-testfiles' in sys.argv:
+        print("Writing debug files", file=sys.stderr)
         main(write_files=True)
     else:
         main()
