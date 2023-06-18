@@ -5,14 +5,14 @@
 import json
 import sys
 from tempfile import NamedTemporaryFile
-import time
+from typing import Any
 
-def jsonfixer(text: str, depth: int=0, debug: bool=False, write_files: bool=False):
+def jsonfixer(text: str, depth: int=0, debug: bool=False, write_files: bool=False) -> Any:
     """ tries to fix broken JSON
         uses json.loads and grabs the exception, looking for broken things.
-        
+
         will only go a bunch of levels deep and bail if that doesn't work it'll give up and return False
-        
+
         returns a dict or False
         """
     if depth > 50:
@@ -24,18 +24,18 @@ def jsonfixer(text: str, depth: int=0, debug: bool=False, write_files: bool=Fals
         if write_files:
             # only used during dev or testing
             print("Writing debug file")
-            with NamedTemporaryFile(prefix='splunk-jobsearch-debug-', suffix='.txt', delete=False) as fh:
-                fh.write(text)
+            with NamedTemporaryFile(prefix='splunk-jobsearch-debug-', suffix='.txt', delete=False) as file_handle:
+                file_handle.write_text(text)
         if debug:
             print(exception_data, file=sys.stderr)
         # iterate backwards from the error position to try and fix it
-        
-        # for some things you need to go back further to start with, to avoid other issues 
-        # quotes are a big one - if you've got two quote marks in a row and the second one's 
+
+        # for some things you need to go back further to start with, to avoid other issues
+        # quotes are a big one - if you've got two quote marks in a row and the second one's
         # the end of a string, but the first one's the unescaped thing, you don't want to replace
         # the "error causing" one
-        min_iterate_range = 0 
-        
+        min_iterate_range = 0
+
         if "escape" in exception_data.msg:
             string_to_replace = '\\'
             string_replacement = ""
@@ -50,7 +50,7 @@ def jsonfixer(text: str, depth: int=0, debug: bool=False, write_files: bool=Fals
             print(f"Slice at -2:+2: '{text[(exception_data.pos-2):(exception_data.pos+2)]}'")
             string_to_replace = '"'
             string_replacement = '\\"'
-            sys.exit()
+            sys.exit(1)
 
         for i in range(min_iterate_range,10):
             if text[exception_data.pos-i] == string_to_replace:

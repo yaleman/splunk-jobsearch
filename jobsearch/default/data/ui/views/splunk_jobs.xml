@@ -1,4 +1,4 @@
-<form>
+<form version="1.1">
   <label>Splunk Jobs</label>
   <fieldset submitButton="true" autoRun="true">
     <input type="time" token="timeframe" searchWhenChanged="true">
@@ -16,7 +16,7 @@
       <fieldForLabel>region</fieldForLabel>
       <fieldForValue>region</fieldForValue>
       <search>
-        <query>source="jobsearch" 
+        <query>source="jobsearch"
 |  dedup region
 | sort region | table region</query>
         <earliest>-24h@h</earliest>
@@ -54,7 +54,7 @@
       <table>
         <title>Job Details</title>
         <search>
-          <query>source=jobsearch $jobTitle$ $region$ $category$ 
+          <query>source=jobsearch $jobTitle$ $region$ $category$
 | rex mode=sed "s/(Education)\s*:\s*/\n\n\1: /" field=description
 | rex mode=sed "s/(Responsibilities)\s*:\s*/\n\n\1: /" field=description
 | rex mode=sed "s/(Knowledge)\s*:\s*/\n\n\1: /" field=description
@@ -74,10 +74,10 @@
       <table>
         <search>
           <query>source="jobsearch" $region$ $category$ $jobTitle$
-| rename locations{} as Locations 
-| eval datePosted=strftime(strptime(datePosted,"%Y-%m-%dT%H:%M:%S.%N-%:z"),"%Y-%m-%d") 
+| rename locations{} as Locations
+| eval datePosted=strftime(strptime(datePosted,"%Y-%m-%dT%H:%M:%S.%N-%:z"),"%Y-%m-%d")
 | sort -datePosted, category, region, locations, jobTitle | dedup jobTitle, region, datePosted
-| table category, region, jobTitle, Locations, datePosted 
+| table category, region, jobTitle, Locations, datePosted
 | rename datePosted as "Date Posted", jobTitle as Title, category as Category, region as Region</query>
           <earliest>$timeframe.earliest$</earliest>
           <latest>$timeframe.latest$</latest>

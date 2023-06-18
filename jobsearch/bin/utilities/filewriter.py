@@ -5,13 +5,13 @@ import os
 import sys
 from tempfile import NamedTemporaryFile
 
-def write_file(content: str):
-    """ writes out content to ./testdata/%Y-%m-%d/filename 
-    
-        this is ONLY ever used in testing during development 
+def write_file(content: str) -> bool:
+    """ writes out content to ./testdata/%Y-%m-%d/filename
+
+        this is ONLY ever used in testing during development
         or if someone specifically modifies the input
     """
-    
+
     file_handle = NamedTemporaryFile(prefix=f"splunk-jobsearch-urlcontent-", suffix='.txt', delete=False)
     try:
         file_handle.write(content.encode('utf-8'))

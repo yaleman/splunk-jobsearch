@@ -4,11 +4,11 @@ echo "Making data dir"
 
 
 TESTDIR="./testdata/$(date '+%Y-%m-%d')"
-mkdir -p "${TESTDIR}" || exit 1 
+mkdir -p "${TESTDIR}" || exit 1
 
 echo "Running in test mode, this will write loads of files to ${TESTDIR}"
 
-jobsearch/bin/jsondump.py --write-testfiles 2>"${TESTDIR}/error.log" >"${TESTDIR}/run.log"
+poetry run python jobsearch/bin/jsondump.py --write-testfiles 2>"${TESTDIR}/error.log" >"${TESTDIR}/run.log"
 
 if [ -d '/tmp/' ]; then
     mv /tmp/splunk-jobsearch* "${TESTDIR}"

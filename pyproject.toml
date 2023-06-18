@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "splunk-jobsearch"
+version = "0.0.7"
+description = "Job Search on Splunk Jobs"
+authors = ["James Hodgkinson <james@terminaloutcomes.com>"]
+readme = "README.md"
+packages = [{include = "splunk_jobsearch"}]
+
+[tool.poetry.dependencies]
+python = "^3.7"
+requests = "^2.31.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ksconf = "^0.11.4"
+ruff = "^0.0.272"
+mypy = "^1.3.0"
+black = "^23.3.0"
+types-requests = "^2.31.0.1"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 200
