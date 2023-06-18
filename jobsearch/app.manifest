@@ -1,51 +1,51 @@
 {
-  "schemaVersion": "2.0.0", 
+  "schemaVersion": "2.0.0",
   "info": {
-    "title": "Job Search", 
+    "title": "Job Search",
     "id": {
-      "group": null, 
-      "name": "jobsearch", 
-      "version": "0.0.6"
-    }, 
+      "group": null,
+      "name": "jobsearch",
+      "version": "0.0.7"
+    },
     "author": [
       {
-        "name": "James Hodgkinson", 
-        "email": "james@terminaloutcomes.com", 
+        "name": "James Hodgkinson",
+        "email": "james@terminaloutcomes.com",
         "company": null
       }
-    ], 
-    "releaseDate": null, 
-    "description": "Monitoring the splunk jobs page for new jobs!", 
+    ],
+    "releaseDate": null,
+    "description": "Monitoring the splunk jobs page for new jobs!",
     "classification": {
-      "intendedAudience": null, 
-      "categories": [], 
+      "intendedAudience": null,
+      "categories": [],
       "developmentStatus": null
-    }, 
-    "commonInformationModels": null, 
+    },
+    "commonInformationModels": null,
     "license": {
-      "name": null, 
-      "text": null, 
+      "name": null,
+      "text": null,
       "uri": null
-    }, 
+    },
     "privacyPolicy": {
-      "name": null, 
-      "text": null, 
+      "name": null,
+      "text": null,
       "uri": null
-    }, 
+    },
     "releaseNotes": {
-      "name": null, 
-      "text": null, 
+      "name": null,
+      "text": null,
       "uri": null
     }
-  }, 
-  "dependencies": null, 
-  "tasks": null, 
-  "inputGroups": null, 
-  "incompatibleApps": null, 
-  "platformRequirements": null, 
+  },
+  "dependencies": null,
+  "tasks": null,
+  "inputGroups": null,
+  "incompatibleApps": null,
+  "platformRequirements": null,
   "supportedDeployments": [
-    "_standalone", 
+    "_standalone",
     "_distributed"
-  ], 
+  ],
   "targetWorkloads": ["*"]
 }
